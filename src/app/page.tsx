@@ -128,6 +128,28 @@ export default function Page() {
       });
     }
 
+    // (1b) card tilt + cursor spotlight — buttery 3D hover on chips & project cards.
+    // Sets --mx/--my (px within card) for the spotlight, and a perspective tilt
+    // toward the cursor. Resets on leave so the CSS reveal/hover takes back over.
+    if (!reduce) {
+      const tilt = (el: HTMLElement, maxDeg: number, lift: number) => {
+        const move = (e: MouseEvent) => {
+          const r = el.getBoundingClientRect();
+          const px = (e.clientX - r.left) / r.width;
+          const py = (e.clientY - r.top) / r.height;
+          el.style.setProperty("--mx", `${e.clientX - r.left}px`);
+          el.style.setProperty("--my", `${e.clientY - r.top}px`);
+          el.style.transform = `perspective(900px) rotateX(${(0.5 - py) * maxDeg}deg) rotateY(${(px - 0.5) * maxDeg}deg) translateY(${lift}px)`;
+        };
+        const leave = () => { el.style.transform = ""; };
+        el.addEventListener("mousemove", move);
+        el.addEventListener("mouseleave", leave);
+        cleanups.push(() => { el.removeEventListener("mousemove", move); el.removeEventListener("mouseleave", leave); });
+      };
+      document.querySelectorAll<HTMLElement>(".chip").forEach((el) => tilt(el, 8, -6));
+      document.querySelectorAll<HTMLElement>(".proj:not(.coming)").forEach((el) => tilt(el, 4.5, -6));
+    }
+
     // (2) count-up stats — tween 0→target once the strip scrolls into view
     const band = document.querySelector(".statband");
     if (band) {
