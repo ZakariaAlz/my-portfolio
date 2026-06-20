@@ -91,10 +91,11 @@ bun run lint       # eslint — must exit 0 (warnings ok, errors block CI)
 # extract video frames: ffmpeg -i in.webm -vf "fps=1/2,scale=480:-1" out/f%03d.png
 ```
 
-## CI/CD (GitHub Actions → Vercel)
-- **`.github/workflows/ci.yml`** — runs on every PR + push to `main`: `bun install --frozen-lockfile` → `tsc --noEmit` → `bun run lint` → `bun run build`. This is the merge gate; keep all four green.
-- **`.github/workflows/deploy.yml`** — on push to `main` (or manual `workflow_dispatch`), builds with the Vercel CLI and deploys to **production**.
-- **One-time setup the user must do** (deploy stays red until then): `vercel link` the repo, then add three GitHub repo secrets — `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID` (the two IDs come from `.vercel/project.json`). If using this workflow, **disable Vercel's own Git auto-deploy** for the project so it doesn't double-ship.
+## Hosting & CI/CD (GitHub Actions → Cloudflare Pages)
+- **Static export.** `next.config.ts` sets `output: "export"` (+ `images.unoptimized`, `trailingSlash`) — `bun run build` emits a static site to **`out/`** (no Node server; site has no API routes/server actions). Host is **Cloudflare Pages** (free, unlimited bandwidth, no card — chosen over Vercel/Hetzner for a static site).
+- **`.github/workflows/ci.yml`** — every PR + push to `main`: `bun install --frozen-lockfile` → `tsc --noEmit` → `bun run lint` → `bun run build`. Merge gate; keep all four green.
+- **`.github/workflows/deploy.yml`** — on push to `main`, builds and `wrangler pages deploy out` to Cloudflare Pages. **One-time setup:** add 2 repo secrets `CLOUDFLARE_API_TOKEN` (token template "Cloudflare Pages — Edit") + `CLOUDFLARE_ACCOUNT_ID`. No card. (Zero-secret alternative: connect the repo in the Cloudflare dashboard with build `bun run build`, output `out`, and delete deploy.yml.)
+- **`/reference/`** (gitignored) holds the user's inspiration stash + screen recordings. It was in `public/assets/` but that made `out/` 671 MB (videos copied into the export) and blew Cloudflare's 25 MiB/file limit — keep big media OUT of `public/`.
 - **ESLint note:** `react-hooks/set-state-in-effect` and `react-hooks/immutability` are downgraded to warnings in `eslint.config.mjs` — this codebase is intentionally imperative (three.js / canvas / scroll in `useEffect`); don't "fix" those by refactoring working components.
 
 ## Immediate next step
