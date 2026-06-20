@@ -7,6 +7,7 @@ import ArchitectureFlow from "@/components/ArchitectureFlow";
 import CodeWindow from "@/components/CodeWindow";
 import HowIWork from "@/components/HowIWork";
 import Constellation from "@/components/Constellation";
+import Globe from "@/components/Globe";
 import { BRAND } from "@/lib/brand";
 
 declare global {
@@ -424,11 +425,9 @@ export default function Page() {
             <span className="coords"><span className="pin" />Freelancer · Algiers, Algeria</span>
           </div>
           <div className="globe-stage">
-            <div className="locpin" aria-hidden="true">
-              <span className="ring" /><span className="ring d2" /><span className="ring d3" />
-              <span className="core" />
-              <span className="loclabel">Algiers</span>
-            </div>
+            <span className="globe-glow" aria-hidden="true" />
+            <Globe />
+            <span className="globe-tag"><span className="pin" />Algiers</span>
           </div>
         </div>
       </section>
