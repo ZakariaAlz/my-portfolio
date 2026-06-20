@@ -10,17 +10,17 @@ type Flow = { key: string; label: string; sub: string; nodes: FNode[]; links: [s
 
 const FLOWS: Flow[] = [
   {
-    key: "data", label: "Data Engineering", sub: "Ingest → Model → Serve",
+    key: "data", label: "Data Engineering", sub: "Ingest → Lake (Bronze · Silver · Gold) → dbt → Star Schema → BI",
     nodes: [
-      { id: "src",  x: 0.06, y: 0.50, icon: "kafka",      label: "Streams" },
+      { id: "src",  x: 0.06, y: 0.50, icon: "python",     label: "Ingest" },
       { id: "orch", x: 0.28, y: 0.22, icon: "airflow",    label: "Airflow" },
-      { id: "proc", x: 0.28, y: 0.78, icon: "spark",      label: "Spark" },
+      { id: "lake", x: 0.28, y: 0.78, icon: "minio",      label: "Data Lake" },
       { id: "xfrm", x: 0.50, y: 0.50, icon: "dbt",        label: "dbt" },
-      { id: "wh",   x: 0.73, y: 0.28, icon: "snowflake",  label: "Snowflake" },
-      { id: "db",   x: 0.73, y: 0.74, icon: "postgresql", label: "Postgres" },
-      { id: "bi",   x: 0.94, y: 0.50, icon: "grafana",    label: "Dashboards" },
+      { id: "wh",   x: 0.73, y: 0.28, icon: "postgresql", label: "Star Schema" },
+      { id: "ctr",  x: 0.73, y: 0.74, icon: "docker",     label: "Docker" },
+      { id: "bi",   x: 0.94, y: 0.50, icon: "bi",         label: "Power BI" },
     ],
-    links: [["src", "orch"], ["src", "proc"], ["orch", "xfrm"], ["proc", "xfrm"], ["xfrm", "wh"], ["xfrm", "db"], ["wh", "bi"], ["db", "bi"]],
+    links: [["src", "orch"], ["src", "lake"], ["orch", "xfrm"], ["lake", "xfrm"], ["xfrm", "wh"], ["xfrm", "ctr"], ["wh", "bi"], ["ctr", "bi"]],
   },
   {
     key: "soft", label: "Software Engineering", sub: "Build → Run → Ship",
@@ -155,6 +155,7 @@ export default function ArchitectureFlow({ icons }: { icons: Record<string, stri
           </button>
         ))}
       </div>
+      <div className="arch-cap" key={tab}>{FLOWS[tab].sub}</div>
       <div className="arch-scroll">
         <div className="arch-stage" ref={stageRef}>
           <canvas ref={canvasRef} aria-hidden="true" />
