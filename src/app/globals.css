@@ -430,9 +430,13 @@ img { display: block; }
 .proj.feat { grid-column: span 3; }
 .proj.half { grid-column: span 3; }
 .proj .shot { aspect-ratio: 16/10; position: relative; overflow: hidden; background: #fff; border-bottom: 1px solid var(--line); }
-/* GitHub social-preview card — shown whole (contain) on white so nothing crops */
-.proj .shot .og { width: 100%; height: 100%; object-fit: contain; object-position: center; transition: transform .6s var(--ease); }
-.proj:hover .shot .og { transform: scale(1.03); }
+/* crossfading succession of real project screenshots / diagrams (contain on white, nothing crops) */
+.proj .shots { position: absolute; inset: 0; }
+.proj .shot-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center; opacity: 0; transition: opacity .8s var(--ease); }
+.proj .shot-img.on { opacity: 1; }
+.proj .shots-dots { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); z-index: 3; display: flex; gap: 5px; }
+.proj .shots-dots i { width: 5px; height: 5px; border-radius: 50%; background: rgba(14,15,28,.18); transition: width .35s var(--ease), background .35s; }
+.proj .shots-dots i.on { width: 15px; border-radius: 3px; background: var(--mint); }
 .proj .ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; gap: 18px; position: relative; background: linear-gradient(135deg, #EDEFFB, #E9EEFB); }
 .proj .ph::before { content: ""; position: absolute; inset: 0; opacity: .6; background: radial-gradient(55% 55% at 28% 22%, rgba(92,99,230,.28), transparent), radial-gradient(50% 50% at 82% 88%, rgba(141,146,232,.2), transparent); }
 .proj .ph .logo { position: relative; width: clamp(34px,4vw,52px); height: clamp(34px,4vw,52px); color: var(--ink); opacity: .82; transition: transform .5s var(--ease), opacity .4s; }
