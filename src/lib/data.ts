@@ -1,0 +1,121 @@
+export const DATA = {
+  name: "Zack",
+  fullName: "Zakaria Alizouaoui",
+  title: "Data Engineer & AI Specialist",
+  location: "Algiers, Algeria",
+  tz: "Africa/Algiers",
+  email: "zakariaalizouaoui.dev@gmail.com",
+  socials: {
+    linkedin: "https://www.linkedin.com/in/zakaria-alizouaoui/",
+    github: "https://github.com/ZakariaAlz",
+  },
+
+  about: {
+    body: "I'm a data engineer with internship experience, currently working full-time and opening up to select freelance work. I care about pipelines that don't break, models you can trust, and documentation future-you will thank present-you for.",
+  },
+
+  stack: [
+    { name: "Python",    icon: "python",    cat: "Languages" },
+    { name: "SQL",       icon: "sql",       cat: "Languages" },
+    { name: "Pandas",    icon: "pandas",    cat: "Languages" },
+    { name: "Spark",     icon: "spark",     cat: "Processing" },
+    { name: "Airflow",   icon: "airflow",   cat: "Processing" },
+    { name: "Kafka",     icon: "kafka",     cat: "Processing" },
+    { name: "dbt",       icon: "dbt",       cat: "Processing" },
+    { name: "Snowflake", icon: "snowflake", cat: "Storage" },
+    { name: "PostgreSQL",icon: "postgresql",cat: "Storage" },
+    { name: "MinIO",     icon: "minio",     cat: "Storage" },
+    { name: "AWS",       icon: "aws",       cat: "Infra" },
+    { name: "Docker",    icon: "docker",    cat: "Infra" },
+    { name: "Terraform", icon: "terraform", cat: "Infra" },
+    { name: "Git",       icon: "git",       cat: "Infra" },
+  ],
+
+  services: [
+    { icon: "pipeline",  title: "Data Pipelines",       desc: "Batch & streaming ingestion that doesn't break at 3am — built on Airflow, Spark and Kafka." },
+    { icon: "warehouse", title: "Warehouse Modeling",    desc: "Clean, documented, layered warehouses with dbt — Snowflake or Postgres, modeled to answer questions fast." },
+    { icon: "quality",   title: "Quality & Reliability", desc: "Contracts, tests, lineage and alerting so the numbers stay trustworthy as you scale." },
+    { icon: "automation",title: "AI & Automation",       desc: "Agents, models and self-running pipelines that turn manual workflows into systems that think." },
+  ],
+
+  timeline: [
+    {
+      period: "2022", org: "Deltalog", role: "Software Engineering Intern",
+      phase: "Software", tone: "soft", logo: "/logos/deltalog.png" as string | null, mono: "D", current: false,
+      desc: "Where it began — an educational platform in Laravel with interactive Matter.js physics labs for math & science.",
+    },
+    {
+      period: "2023", org: "TalabaStore", role: "Full-Stack Development Intern",
+      phase: "Software", tone: "soft", logo: "/logos/talabastore.png" as string | null, mono: "T", current: false,
+      desc: "Shipped a full MERN delivery platform end to end — JWT auth, 20+ APIs, role-based dashboards. I fell for building whole systems.",
+    },
+    {
+      period: "2023 — 24", org: "Djezzy", role: "Data Engineering Intern",
+      phase: "Data", tone: "data", logo: "/logos/djezzy.png" as string | null, mono: "D", current: false,
+      desc: "The turn to data: real-time Kafka + Flink pipelines and a live NPS dashboard at a national telecom.",
+    },
+    {
+      period: "2025", org: "Algérie Télécom", role: "Big Data Engineering Intern",
+      phase: "Data", tone: "data", logo: "/logos/algerie-telecom.png" as string | null, mono: "A", current: false,
+      desc: "Data at scale — 16M+ records/day on Hadoop & Spark, Airflow orchestration, and BI the teams actually use.",
+    },
+    {
+      period: "2025 — Now", org: "Dusens Research", role: "Data Engineer",
+      phase: "Data + AI", tone: "ai", logo: "/logos/dsr.png" as string | null, mono: "D", current: true,
+      desc: "Building the company's first modern data platform — medallion architecture, automated quality, and the AI & automation layer on top.",
+    },
+  ],
+
+  projects: [
+    {
+      name: "CDR Telecom Big Data Platform",
+      tag: "Kafka · Flink · Spark · Hive",
+      kind: "Data Engineering",
+      desc: "End-to-end containerized batch + streaming pipeline for telecom CDR processing — HDFS, Hive, Spark, Kafka, Flink, Superset & Power BI.",
+      repo: "https://github.com/ZakariaAlz/cdr-telecom-bigdata-platform",
+      img: null as string | null,
+      featured: true,
+      stackIcons: ["kafka", "spark", "airflow"],
+    },
+    {
+      name: "Real-Time NPS Analytics",
+      tag: "Kafka · Flink · Grafana",
+      kind: "Stream Processing",
+      desc: "Streams telecom satisfaction surveys, computes Net Promoter Score on the fly with Flink, live Grafana dashboard.",
+      repo: "https://github.com/ZakariaAlz/realtime-nps-analytics",
+      img: null as string | null,
+      featured: false,
+      stackIcons: ["kafka", "dbt", "postgresql"],
+    },
+    {
+      name: "AI Attrition Prediction",
+      tag: "Python · scikit-learn · ML",
+      kind: "Machine Learning",
+      desc: "Predicts employee attrition from HR survey data — feature engineering, model tuning and evaluation with ROC and feature-importance analysis.",
+      repo: "https://github.com/ZakariaAlz/AI_Attrition",
+      img: null as string | null,
+      featured: false,
+      stackIcons: ["python", "pandas", "docker"],
+    },
+    {
+      name: "Interactive Learning Platform",
+      tag: "Laravel · PHP · Livewire",
+      kind: "Web Platform",
+      desc: "A multilingual web platform for elementary-school students — courses, assignments and a role-based admin dashboard.",
+      repo: "https://github.com/ZakariaAlz/Interactive-Plateform-for-Elementary-Students",
+      img: null as string | null,
+      featured: false,
+      stackIcons: ["git", "docker", "postgresql"],
+    },
+    {
+      name: "WeDelivery",
+      tag: "Full-Stack · Software Eng.",
+      kind: "Full-Stack",
+      desc: "A full-stack delivery application covering ordering, dispatch and tracking — a software-engineering deep-dive across the whole stack.",
+      repo: "https://github.com/ZakariaAlz/WeDelivery",
+      img: null as string | null,
+      featured: false,
+      stackIcons: ["python", "docker", "aws"],
+    },
+  ],
+} as const;

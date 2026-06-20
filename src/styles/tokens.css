@@ -1,0 +1,38 @@
+:root {
+  /* ── Left panel (Stripe world) ── */
+  --l-bg:      #F8FAFD;
+  --l-ink:     #0A2540;
+  --l-mute:    #425466;
+  --l-line:    rgba(10,37,64,.1);
+  --l-surface: #FFFFFF;
+
+  /* ── Right panel (Daniel Sun world) ── */
+  --r-bg:      #0C0C12;
+  --r-ink:     #FAFAFA;
+  --r-mute:    rgba(250,250,250,.5);
+  --r-line:    rgba(255,255,255,.08);
+  --r-gold:    #F5C400;
+  --r-gold-d:  #C49900;
+  --r-gold-glow: rgba(245,196,0,.14);
+
+  /* ── Ribbon / wave gradient stops (left → divider → right) ── */
+  --wave-1: #6D28D9;   /* deep violet   */
+  --wave-2: #A855F7;   /* violet        */
+  --wave-3: #EC4899;   /* rose          */
+  --wave-4: #F97316;   /* orange        */
+  --wave-5: #F5C400;   /* gold (same as --r-gold — the bridge) */
+
+  /* ── Typography ── */
+  --font-sans:   "Manrope", system-ui, sans-serif;
+  --font-serif:  "Playfair Display", Georgia, serif;
+  --font-mono:   ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* ── Easing (Stripe library + Daniel Sun exact) ── */
+  --ease-expo:   cubic-bezier(.16,1,.3,1);
+  --ease-cubic:  cubic-bezier(.33,1,.68,1);
+  --ease-hero:   cubic-bezier(.2,.67,.42,.96);   /* Daniel Sun exact */
+  --ease-spring: cubic-bezier(.175,.885,.32,1.275);
+
+  /* ── Layout ── */
+  --nav-h: 64px;
+}
