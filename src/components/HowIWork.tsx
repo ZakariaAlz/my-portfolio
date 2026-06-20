@@ -1,23 +1,34 @@
 "use client";
 import { useEffect, useRef, useState, type ReactElement } from "react";
 
-/* Typeform/Apple-style pinned "story" section.
-   The section is tall; an inner stage is position:sticky and holds the frame.
-   Scroll progress through the section drives the active step + a self-filling
-   pipeline rail. No GSAP pin (sticky is more robust inside React); Lenis makes
-   the scrub feel smooth. Collapses to a static stacked list on mobile / reduced-motion. */
+/* "The Process" — a node-flow pipeline in the n8n / Make / Gumloop language,
+   rendered in our clean white + indigo palette. Four workflow "module" nodes
+   wired by curved bezier connectors on a dot-grid canvas; data packets flow
+   along the wires and each node executes in sequence as the pinned section
+   scrolls. Collapses to a static stacked list on mobile / reduced-motion. */
 
-type Step = { k: string; n: string; title: string; body: string; icon: "discover" | "design" | "build" | "activate" };
+type Step = {
+  k: string; n: string; title: string; tag: string; body: string;
+  icon: "discover" | "design" | "build" | "activate";
+  cx: number; cy: number; // node centre, as % of the 1000×340 canvas
+};
 
 const STEPS: Step[] = [
-  { k: "discover", n: "01", title: "Discover", icon: "discover",
+  { k: "discover", n: "01", title: "Discover", tag: "map",   icon: "discover", cx: 13, cy: 58.8,
     body: "I map the sources, the stakeholders, and the exact decision the data has to serve — before a line of pipeline code." },
-  { k: "design", n: "02", title: "Design", icon: "design",
+  { k: "design",   n: "02", title: "Design",   tag: "model", icon: "design",   cx: 38, cy: 32.4,
     body: "I model the schemas and data contracts first, so the warehouse stays trustworthy as it grows." },
-  { k: "build", n: "03", title: "Build", icon: "build",
+  { k: "build",    n: "03", title: "Build",    tag: "ship",  icon: "build",    cx: 64, cy: 61.8,
     body: "I ship the pipeline — ingest, transform, test, deploy — versioned, containerized, and observable by default." },
-  { k: "activate", n: "04", title: "Activate", icon: "activate",
+  { k: "activate", n: "04", title: "Activate", tag: "serve", icon: "activate", cx: 88, cy: 32.4,
     body: "I layer dashboards, alerts, and AI on top — the part that turns clean data into decisions that compound." },
+];
+
+// Curved connectors between consecutive node centres, in the 1000×340 viewBox.
+const LINKS = [
+  "M130 200 C 250 200, 270 110, 380 110",
+  "M380 110 C 500 110, 530 210, 640 210",
+  "M640 210 C 760 210, 770 110, 880 110",
 ];
 
 function StepIcon({ k }: { k: Step["icon"] }): ReactElement {
@@ -38,7 +49,6 @@ export default function HowIWork() {
   const [active, setActive] = useState(0);
   const [flat, setFlat] = useState(false); // reduced-motion → render static
   const sectionRef = useRef<HTMLElement>(null);
-  const pinRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setFlat(!!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
@@ -55,9 +65,7 @@ export default function HowIWork() {
       const total = el.offsetHeight - window.innerHeight;
       const passed = Math.min(Math.max(-rect.top, 0), Math.max(total, 1));
       const p = total > 0 ? passed / total : 0;
-      const idx = Math.min(STEPS.length - 1, Math.floor(p * STEPS.length));
-      setActive(idx);
-      pinRef.current?.style.setProperty("--hw-fill", String(p));
+      setActive(Math.min(STEPS.length - 1, Math.floor(p * STEPS.length)));
     };
     const onScroll = () => { if (!raf) raf = requestAnimationFrame(compute); };
     compute();
@@ -72,36 +80,57 @@ export default function HowIWork() {
 
   return (
     <section className={`howwork ${flat ? "flat" : ""}`} id="process" ref={sectionRef} aria-label="How I work">
-      <div className="howwork-pin" ref={pinRef}>
+      <div className="howwork-pin">
         <div className="howwork-head">
           <div className="seclabel">The Process</div>
           <h2 className="sectitle disp">Four steps from raw data to decisions.</h2>
         </div>
 
-        <div className="howwork-body">
-          {/* left — the active step (steps stacked; active fades up) */}
-          <div className="howwork-text">
-            {STEPS.map((s, i) => (
-              <article key={s.k} className={`hw-step ${i === active ? "on" : ""}`} aria-hidden={i === active ? undefined : true}>
-                <span className="hw-step-n">{s.n}</span>
-                <h3 className="hw-step-title disp">{s.title}</h3>
-                <p className="hw-step-body">{s.body}</p>
-              </article>
+        {/* node-flow pipeline canvas */}
+        <div className="flow" aria-hidden="true">
+          <svg className="flow-wires" viewBox="0 0 1000 340" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="hwWire" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stopColor="#5C63E6" />
+                <stop offset="1" stopColor="#8D92E8" />
+              </linearGradient>
+            </defs>
+            {LINKS.map((d, i) => (
+              <g key={i} className={`wire ${i < active ? "done" : ""} ${i === active ? "live" : ""}`}>
+                <path id={`hwlnk${i}`} className="wire-base" d={d} />
+                <path className="wire-flow" d={d} />
+                <circle className="packet" r="4.2">
+                  <animateMotion dur={`${2.3 + i * 0.25}s`} repeatCount="indefinite">
+                    <mpath href={`#hwlnk${i}`} />
+                  </animateMotion>
+                </circle>
+              </g>
             ))}
-          </div>
+          </svg>
 
-          {/* right — self-filling pipeline rail */}
-          <div className="howwork-rail" aria-hidden="true">
-            <span className="hw-track"><span className="hw-track-fill" /></span>
-            <div className="hw-nodes">
-              {STEPS.map((s, i) => (
-                <div key={s.k} className={`hw-node ${i <= active ? "done" : ""} ${i === active ? "on" : ""}`}>
-                  <span className="hw-dot"><StepIcon k={s.icon} /></span>
-                  <span className="hw-node-label">{s.title}</span>
-                </div>
-              ))}
+          {STEPS.map((s, i) => (
+            <div
+              key={s.k}
+              className={`flow-node ${i < active ? "done" : ""} ${i === active ? "on" : ""}`}
+              style={{ left: `${s.cx}%`, top: `${s.cy}%` }}
+            >
+              <span className="fn-port l" />
+              <span className="fn-port r" />
+              <span className="fn-ic"><StepIcon k={s.icon} /></span>
+              <span className="fn-meta"><b>{s.title}</b><i>{s.tag}</i></span>
             </div>
-          </div>
+          ))}
+        </div>
+
+        {/* active step detail (crossfade) */}
+        <div className="flow-detail">
+          {STEPS.map((s, i) => (
+            <article key={s.k} className={`fd-step ${i === active ? "on" : ""}`} aria-hidden={i === active ? undefined : true}>
+              <span className="fd-n">{s.n} <i>/ 04</i></span>
+              <h3 className="fd-title disp">{s.title}</h3>
+              <p className="fd-body">{s.body}</p>
+            </article>
+          ))}
         </div>
 
         <div className="howwork-progress" aria-hidden="true">
@@ -109,6 +138,19 @@ export default function HowIWork() {
             <span key={s.k} className={`hw-pip ${i === active ? "on" : ""}`} />
           ))}
         </div>
+
+        {/* mobile / reduced-motion: simple stacked list */}
+        <ul className="flow-list">
+          {STEPS.map((s) => (
+            <li key={s.k} className="fl-item">
+              <span className="fn-ic"><StepIcon k={s.icon} /></span>
+              <div>
+                <b>{s.n} · {s.title}</b>
+                <p>{s.body}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );
