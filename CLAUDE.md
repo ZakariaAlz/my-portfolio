@@ -8,8 +8,15 @@
 ## Working style (IMPORTANT)
 - **Work autonomously. Do NOT ask the user to run commands or for confirmation** — run everything yourself (Bash, ffmpeg, builds, dev server). The user has authorized this.
 - We are **near the context limit** — be token-efficient, avoid re-reading large files, don't re-derive known facts. This file is the handoff so a fresh session can continue.
-- After edits, **verify with `bun run build`** (from `my-portfolio/`). Build must stay green.
 - The user is **design-obsessive** and has rejected many "cheap/AI-slop" attempts — match the reference sites' quality; prefer rendered UI / canvas / WebGL over stock photos.
+
+### Commit & verify discipline (MANDATORY)
+- **Test your work EVERY single time before committing.** Never claim done or commit on faith. The verification ladder:
+  1. `bunx tsc --noEmit` while iterating (doesn't touch `.next`, safe during `bun run dev`).
+  2. `bun run build` at a checkpoint — **stop `next dev` first** (they share `.next`), build must stay green.
+  3. **Render-verify** UI/animation changes in a real browser before saying it works — Playwright/Chromium is installed (`~/.cache/ms-playwright`). Screenshot the changed section + assert the relevant CSS classes/transforms actually applied. Don't trust the logic alone.
+- **Small, focused commits.** One logical change per commit, conventional-commit style (`feat(scope):`, `fix:`, `docs:`, `ci:`). Commit as you go, not one giant dump at the end. End each message with the `Co-Authored-By: Claude Opus 4.8 (1M context)` trailer.
+- **Branch for feature work** — never commit straight to `main`. Open a PR; CI must be green before merge. `main` is the production branch (auto-deploys — see CI/CD below).
 
 ## Who
 **Zakaria "Zack" Alizouaoui** — Data Engineer & AI Specialist, **Algiers, Algeria**. Freelancer + full-time **Data Engineer at Dusens Research** (since Nov 2025). Email `zakariaalizouaoui.dev@gmail.com` · LinkedIn `/in/zakaria-alizouaoui` · GitHub `ZakariaAlz`.
@@ -79,8 +86,16 @@ Published Claude artifacts (redeploy same path to update):
 cd "/home/zakaria/Documents/DE Projects/my-portfolio"
 bun run build      # verify (must stay green)
 bun run dev        # http://localhost:3001
+bunx tsc --noEmit  # fast typecheck, safe during dev (doesn't touch .next)
+bun run lint       # eslint — must exit 0 (warnings ok, errors block CI)
 # extract video frames: ffmpeg -i in.webm -vf "fps=1/2,scale=480:-1" out/f%03d.png
 ```
+
+## CI/CD (GitHub Actions → Vercel)
+- **`.github/workflows/ci.yml`** — runs on every PR + push to `main`: `bun install --frozen-lockfile` → `tsc --noEmit` → `bun run lint` → `bun run build`. This is the merge gate; keep all four green.
+- **`.github/workflows/deploy.yml`** — on push to `main` (or manual `workflow_dispatch`), builds with the Vercel CLI and deploys to **production**.
+- **One-time setup the user must do** (deploy stays red until then): `vercel link` the repo, then add three GitHub repo secrets — `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID` (the two IDs come from `.vercel/project.json`). If using this workflow, **disable Vercel's own Git auto-deploy** for the project so it doesn't double-ship.
+- **ESLint note:** `react-hooks/set-state-in-effect` and `react-hooks/immutability` are downgraded to warnings in `eslint.config.mjs` — this codebase is intentionally imperative (three.js / canvas / scroll in `useEffect`); don't "fix" those by refactoring working components.
 
 ## Immediate next step
 Tier 1 ✅ + Tier 2 ✅ (live-typing code · pinned "How I work" · Lusion cursor ribbon) shipped & build-verified 2026-06-20. Remaining:
@@ -89,4 +104,4 @@ Tier 1 ✅ + Tier 2 ✅ (live-typing code · pinned "How I work" · Lusion curso
 - **Optional Lusion extras / watch-outs:** tasteful bloom+grain pass; the cursor ribbon currently overlays the hero's WebGL fluid — if it reads as "too much," fade it while `scrollY < heroHeight`. Consider whether the pinned "How I work" (440vh) scroll length feels right.
 **Dependencies: nothing to install** — `gsap`(+ScrollTrigger+SplitText), `@studio-freight/lenis`, `three`, `framer-motion`, `@gsap/react`, R3F/drei/postprocessing all present. `bun add` only if a new one is ever needed.
 
-*Last updated: 2026-06-20 — Tier-1 + Tier-2 animations shipped (magnetic · count-up · scroll-spy · doodle · live-typing code · pinned "How I work" · cursor ribbon); Indigo locked; full 22-recording audit done.*
+*Last updated: 2026-06-20 — Tier-1 + Tier-2 animations shipped (magnetic · count-up · scroll-spy · doodle · live-typing code · pinned "How I work" · cursor ribbon); Indigo locked; full 22-recording audit done. Plus: About section rebuilt into a composed reveal (masked heading + node rail) & global blur-in fade; staff-quality README; commit/verify discipline + GitHub Actions CI + Vercel prod deploy added.*
