@@ -83,7 +83,7 @@ export const DATA = {
       kind: "Stream Processing",
       desc: "Streams telecom satisfaction surveys, computes Net Promoter Score on the fly with Flink, live Grafana dashboard.",
       repo: "https://github.com/ZakariaAlz/realtime-nps-analytics",
-      shots: ["/projects/nps.png"],
+      shots: ["/projects/nps/1.png", "/projects/nps/2.png"],
       featured: false,
       stackIcons: ["kafka", "dbt", "postgresql"],
     },
