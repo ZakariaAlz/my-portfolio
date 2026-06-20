@@ -10,17 +10,18 @@ import { useEffect, useRef, useState, type ReactElement } from "react";
 type Step = {
   k: string; n: string; title: string; tag: string; body: string;
   icon: "discover" | "design" | "build" | "activate";
-  cx: number; cy: number; // node centre, as % of the 1000×340 canvas
+  cx: number; cy: number;        // node centre, as % of the 1000×340 canvas
+  acc: string; accD: string;     // subtle per-node accent (indigo family)
 };
 
 const STEPS: Step[] = [
-  { k: "discover", n: "01", title: "Discover", tag: "map",   icon: "discover", cx: 13, cy: 58.8,
+  { k: "discover", n: "01", title: "Discover", tag: "map",   icon: "discover", cx: 13, cy: 58.8, acc: "#6A6FF0", accD: "#5057D8",
     body: "I map the sources, the stakeholders, and the exact decision the data has to serve — before a line of pipeline code." },
-  { k: "design",   n: "02", title: "Design",   tag: "model", icon: "design",   cx: 38, cy: 32.4,
+  { k: "design",   n: "02", title: "Design",   tag: "model", icon: "design",   cx: 38, cy: 32.4, acc: "#7B73F2", accD: "#5C63E6",
     body: "I model the schemas and data contracts first, so the warehouse stays trustworthy as it grows." },
-  { k: "build",    n: "03", title: "Build",    tag: "ship",  icon: "build",    cx: 64, cy: 61.8,
+  { k: "build",    n: "03", title: "Build",    tag: "ship",  icon: "build",    cx: 64, cy: 61.8, acc: "#5C63E6", accD: "#4148C2",
     body: "I ship the pipeline — ingest, transform, test, deploy — versioned, containerized, and observable by default." },
-  { k: "activate", n: "04", title: "Activate", tag: "serve", icon: "activate", cx: 88, cy: 32.4,
+  { k: "activate", n: "04", title: "Activate", tag: "serve", icon: "activate", cx: 88, cy: 32.4, acc: "#8D92E8", accD: "#6065D8",
     body: "I layer dashboards, alerts, and AI on top — the part that turns clean data into decisions that compound." },
 ];
 
@@ -49,10 +50,18 @@ export default function HowIWork() {
   const [active, setActive] = useState(0);
   const [flat, setFlat] = useState(false); // reduced-motion → render static
   const sectionRef = useRef<HTMLElement>(null);
+  const moRefs = useRef<(SVGAnimationElement | null)[]>([]);
 
   useEffect(() => {
     setFlat(!!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
   }, []);
+
+  // Fire one data packet along the wire delivering into the newly-active node.
+  useEffect(() => {
+    if (flat) return;
+    const i = active - 1; // wire i connects node i → node i+1
+    if (i >= 0) moRefs.current[i]?.beginElement?.();
+  }, [active, flat]);
 
   useEffect(() => {
     if (flat) { setActive(STEPS.length - 1); return; }
@@ -98,11 +107,12 @@ export default function HowIWork() {
             {LINKS.map((d, i) => (
               <g key={i} className={`wire ${i < active ? "done" : ""} ${i === active ? "live" : ""}`}>
                 <path id={`hwlnk${i}`} className="wire-base" d={d} />
-                <path className="wire-flow" d={d} />
-                <circle className="packet" r="4.2">
-                  <animateMotion dur={`${2.3 + i * 0.25}s`} repeatCount="indefinite">
+                <path className="wire-flow" d={d} pathLength={1} />
+                <circle className="packet" r="5" opacity="0">
+                  <animateMotion ref={(el) => { moRefs.current[i] = el as SVGAnimationElement | null; }} id={`hwmo${i}`} begin="indefinite" dur="0.9s" repeatCount="1">
                     <mpath href={`#hwlnk${i}`} />
                   </animateMotion>
+                  <animate attributeName="opacity" begin={`hwmo${i}.begin`} dur="0.9s" values="0;1;1;0" keyTimes="0;0.14;0.82;1" repeatCount="1" />
                 </circle>
               </g>
             ))}
@@ -112,7 +122,7 @@ export default function HowIWork() {
             <div
               key={s.k}
               className={`flow-node ${i < active ? "done" : ""} ${i === active ? "on" : ""}`}
-              style={{ left: `${s.cx}%`, top: `${s.cy}%` }}
+              style={{ left: `${s.cx}%`, top: `${s.cy}%`, ["--acc" as string]: s.acc, ["--acc-d" as string]: s.accD }}
             >
               <span className="fn-port l" />
               <span className="fn-port r" />
