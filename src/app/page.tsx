@@ -150,6 +150,7 @@ export default function Page() {
       };
       document.querySelectorAll<HTMLElement>(".chip").forEach((el) => tilt(el, 8, -6));
       document.querySelectorAll<HTMLElement>(".proj:not(.coming)").forEach((el) => tilt(el, 4.5, -6));
+      document.querySelectorAll<HTMLElement>(".srv").forEach((el) => tilt(el, 4, -5));
     }
 
     // (2) count-up stats — tween 0→target once the strip scrolls into view
