@@ -13,6 +13,16 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  {
+    // This site is deliberately imperative: three.js, raw canvas, scroll-driven
+    // effects and Lenis are wired by hand inside useEffect. The react-hooks v6
+    // compiler rules flag those one-time setState/assignment patterns as errors,
+    // but they're intentional here — keep them visible as warnings, not blockers.
+    rules: {
+      "react-hooks/set-state-in-effect": "warn",
+      "react-hooks/immutability": "warn",
+    },
+  },
 ]);
 
 export default eslintConfig;
