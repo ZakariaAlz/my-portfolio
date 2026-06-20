@@ -6,7 +6,6 @@ import LiquidHero from "@/components/LiquidHero";
 import ArchitectureFlow from "@/components/ArchitectureFlow";
 import CodeWindow from "@/components/CodeWindow";
 import HowIWork from "@/components/HowIWork";
-import CursorRibbon from "@/components/CursorRibbon";
 import Constellation from "@/components/Constellation";
 import { BRAND } from "@/lib/brand";
 
@@ -196,9 +195,7 @@ export default function Page() {
 
   return (
     <>
-      <div className="mesh" />
       <div className="grain" />
-      <CursorRibbon />
 
       {/* ── NAV ── */}
       <nav className="nav" ref={navRef}>
@@ -225,9 +222,7 @@ export default function Page() {
             <div className="badge e" style={{ animationDelay: ".15s" }}><span className="led" />System Core · Data &amp; AI</div>
             <h1 className="disp e" style={{ animationDelay: ".28s" }}>
               Data &amp; Software<br />
-              <span className="accent doodle-underline">Engineer
-                <svg viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M5 15 C 55 5, 120 21, 185 12 S 270 7, 295 15" /></svg>
-              </span>
+              <span className="accent">Engineer</span>
               <span className="l3"><span className="amp">&amp;</span> AI Automation</span>
             </h1>
             <p className="sub e" style={{ animationDelay: ".46s" }}>
