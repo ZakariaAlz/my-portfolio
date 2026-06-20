@@ -326,9 +326,12 @@ img { display: block; }
 .sectitle .accent { color: var(--mint-d); }
 .lead { margin-top: 20px; font-size: 19px; line-height: 1.6; color: var(--mute); max-width: 56ch; }
 
-.rv { opacity: 0; transform: translateY(26px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
-.rv.in { opacity: 1; transform: none; }
-@media (prefers-reduced-motion: reduce) { .rv { opacity: 1 !important; transform: none !important; } }
+/* Premium scroll reveal — soft blur-in fade-up. One-shot (unobserved after .in),
+   so the blur cost is paid once per element. Used site-wide for coherence. */
+.rv { opacity: 0; transform: translateY(28px); filter: blur(7px); will-change: opacity, transform, filter;
+  transition: opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease); }
+.rv.in { opacity: 1; transform: none; filter: blur(0); }
+@media (prefers-reduced-motion: reduce) { .rv { opacity: 1 !important; transform: none !important; filter: none !important; } }
 
 /* ── STACK (chip grid — icons like the reference) ─────────── */
 .stackgrid { margin-top: 50px; display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; }
@@ -344,19 +347,46 @@ img { display: block; }
 .chip .nm { font-weight: 700; font-size: 16px; }
 .chip .ct { font-family: var(--font-code); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
 
-/* ── ABOUT + TIMELINE ─────────────────────────────────────── */
-.about { display: grid; grid-template-columns: 1.1fr .9fr; gap: 6vw; align-items: start; }
-.bighead { font-family: var(--font-disp); font-weight: 800; letter-spacing: -.04em; line-height: .96; font-size: clamp(40px,6vw,82px); }
+/* ── ABOUT (composed mid-page moment) ─────────────────────────
+   Heading rises line-by-line from behind a mask, the body fades in,
+   and the three tenets light up node-by-node down a drawn rail —
+   the same pipeline-rail language as the timeline + How-I-work. */
+.about-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(40px,6vw,84px); align-items: center; }
+
+.bighead { font-family: var(--font-disp); font-weight: 800; letter-spacing: -.04em; line-height: 1.02; font-size: clamp(40px,6vw,82px); }
 .bighead .accent { color: var(--mint-d); }
-.abody { margin-top: 26px; font-size: 19px; line-height: 1.65; color: var(--ink-soft); max-width: 46ch; }
-.tl { display: flex; flex-direction: column; gap: 14px; }
-.tlcard { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 26px; box-shadow: var(--shadow-sm); transition: transform .4s, box-shadow .4s, border-color .4s; }
-.tlcard:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: rgba(92,99,230,.5); }
-.tlcard .per  { font-family: var(--font-code); font-size: 12px; font-weight: 700; letter-spacing: .04em; color: var(--mint-d); }
-.tlcard .role { font-family: var(--font-disp); font-weight: 700; font-size: 22px; margin-top: 6px; }
-.tlcard .org  { color: var(--mute); font-size: 14px; font-weight: 600; }
-.tlcard .desc { margin-top: 10px; color: var(--ink-soft); font-size: 15px; line-height: 1.55; }
-@media (max-width: 820px) { .about { grid-template-columns: 1fr; gap: 48px; } }
+
+/* masked line reveal — lines translate up inside a clip; generic .rv neutralized */
+.about-head.rv { opacity: 1; transform: none; filter: none; }
+.about-head .ln { display: block; overflow: hidden; padding-bottom: .08em; }
+.about-head .ln > span { display: block; transform: translateY(118%); transition: transform 1s var(--ease); }
+.about-head .ln:nth-child(2) > span { transition-delay: .12s; }
+.about-head.in .ln > span { transform: none; }
+
+.abody { margin-top: 26px; font-size: 19px; line-height: 1.65; color: var(--ink-soft); max-width: 50ch; }
+
+.principles { position: relative; list-style: none; display: flex; flex-direction: column; gap: 28px; padding-left: 30px; }
+.principles.rv { opacity: 1; transform: none; filter: none; }
+.prail { position: absolute; left: 5px; top: 9px; bottom: 9px; width: 2px; border-radius: 2px;
+  background: linear-gradient(180deg, var(--mint), var(--blue)); transform: scaleY(0); transform-origin: top;
+  transition: transform 1.15s var(--ease) .15s; }
+.principles.in .prail { transform: scaleY(1); }
+.pr { position: relative; display: flex; }
+.pr .pnode { position: absolute; left: -30px; top: 4px; width: 12px; height: 12px; border-radius: 50%;
+  background: var(--surface); border: 2px solid var(--mint); box-shadow: 0 0 0 4px rgba(92,99,230,.12); transform: scale(0); }
+.principles.in .pr:nth-child(1) .pnode { animation: nodePop .55s var(--ease) .35s both; }
+.principles.in .pr:nth-child(2) .pnode { animation: nodePop .55s var(--ease) .55s both; }
+.principles.in .pr:nth-child(3) .pnode { animation: nodePop .55s var(--ease) .75s both; }
+@keyframes nodePop { 0% { transform: scale(0); } 62% { transform: scale(1.28); } 100% { transform: scale(1); } }
+.pr b { display: block; font-family: var(--font-disp); font-weight: 700; font-size: 19px; letter-spacing: -.02em; color: var(--ink); }
+.pr em { display: block; margin-top: 3px; font-style: normal; font-size: 14.5px; color: var(--mute); line-height: 1.5; }
+
+@media (max-width: 880px) { .about-grid { grid-template-columns: 1fr; gap: 48px; } }
+@media (prefers-reduced-motion: reduce) {
+  .about-head .ln > span { transform: none !important; }
+  .prail { transform: scaleY(1) !important; }
+  .pr .pnode { animation: none !important; transform: scale(1) !important; }
+}
 
 /* ── SERVICES (Typeform dark) ─────────────────────────────── */
 .services { background: var(--dark); color: #F4F5F7; }

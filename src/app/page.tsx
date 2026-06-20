@@ -323,10 +323,32 @@ export default function Page() {
       </section>
 
       {/* ── ABOUT ── */}
-      <section className="pad" id="about">
-        <div className="seclabel rv">About</div>
-        <h2 className="bighead disp rv">I make data <span className="accent">behave.</span></h2>
-        <p className="abody rv" style={{ maxWidth: "58ch" }}>{DATA.about.body}</p>
+      <section className="pad about-sec" id="about">
+        <div className="about-grid">
+          <div className="about-lead">
+            <div className="seclabel rv">About</div>
+            <h2 className="bighead disp about-head rv" aria-label="I make data behave.">
+              <span className="ln"><span>I make data</span></span>
+              <span className="ln"><span>behave<span className="accent">.</span></span></span>
+            </h2>
+            <p className="abody rv">{DATA.about.body}</p>
+          </div>
+          <ul className="principles rv" aria-label="How I work">
+            <span className="prail" aria-hidden="true" />
+            <li className="pr rv">
+              <span className="pnode" aria-hidden="true" />
+              <div><b>Pipelines that don&apos;t break</b><em>Resilient batch &amp; streaming ingestion, watched and alerted.</em></div>
+            </li>
+            <li className="pr rv">
+              <span className="pnode" aria-hidden="true" />
+              <div><b>Models you can trust</b><em>Tested, layered warehouses with lineage you can audit.</em></div>
+            </li>
+            <li className="pr rv">
+              <span className="pnode" aria-hidden="true" />
+              <div><b>Docs future-you will thank you for</b><em>Context that outlives me — so the system keeps running.</em></div>
+            </li>
+          </ul>
+        </div>
       </section>
 
       {/* ── HOW I WORK (pinned scroll story) ── */}
