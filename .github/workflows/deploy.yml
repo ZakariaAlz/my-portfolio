@@ -1,0 +1,51 @@
+name: Deploy to Production
+
+# Continuous deployment: every push to main ships to Vercel production.
+# Requires three repo secrets (Settings -> Secrets and variables -> Actions):
+#   VERCEL_TOKEN       - vercel.com/account/tokens
+#   VERCEL_ORG_ID      - from `.vercel/project.json` after `vercel link`
+#   VERCEL_PROJECT_ID  - from `.vercel/project.json` after `vercel link`
+# IMPORTANT: if you deploy from here, turn OFF Vercel's own Git auto-deploy
+# for this project (Project -> Settings -> Git) so you don't double-ship.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {} # allow manual prod deploys from the Actions tab
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false # never interrupt an in-flight prod deploy
+
+jobs:
+  deploy:
+    name: Build & deploy (Vercel prod)
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: ${{ steps.deploy.outputs.url }}
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install Vercel CLI
+        run: bun add -g vercel@latest
+
+      - name: Pull Vercel environment (production)
+        run: vercel pull --yes --environment=production --token="${{ secrets.VERCEL_TOKEN }}"
+
+      - name: Build (production)
+        run: vercel build --prod --token="${{ secrets.VERCEL_TOKEN }}"
+
+      - name: Deploy prebuilt artifact to production
+        id: deploy
+        run: |
+          url=$(vercel deploy --prebuilt --prod --token="${{ secrets.VERCEL_TOKEN }}")
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "🚀 Deployed to $url"
