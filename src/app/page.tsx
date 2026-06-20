@@ -486,13 +486,18 @@ export default function Page() {
               <a key={p.name} className={`proj ${cls} rv`} href={p.repo} target="_blank" rel="noopener noreferrer">
                 <div className="shot">
                   <span className="kind">{p.kind}</span>
-                  <div className="ph">
-                    {(p.stackIcons as readonly string[]).map((k) => (
-                      <span key={k} className="logo" style={{ width: "clamp(34px,4vw,52px)", height: "clamp(34px,4vw,52px)" }}>
-                        {ic(k, 48)}
-                      </span>
-                    ))}
-                  </div>
+                  {p.img ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img className="og" src={p.img} alt={`${p.name} on GitHub`} loading="lazy" />
+                  ) : (
+                    <div className="ph">
+                      {(p.stackIcons as readonly string[]).map((k) => (
+                        <span key={k} className="logo" style={{ width: "clamp(34px,4vw,52px)", height: "clamp(34px,4vw,52px)" }}>
+                          {ic(k, 48)}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <div className="meta">
                   <div className="tag">{p.tag}</div>
