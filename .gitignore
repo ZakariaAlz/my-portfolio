@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Local screen recordings (large dev artifacts — keep on disk, never commit)
+
+# Local reference/inspiration stash + screen recordings (dev only, never ship)
+/public/assets/

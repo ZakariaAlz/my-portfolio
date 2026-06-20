@@ -450,7 +450,8 @@ export default function Page() {
         <div className="seclabel rv">Under the hood</div>
         <h2 className="sectitle disp rv">Code when it <span className="accent">counts.</span></h2>
         <p className="lead rv">
-          The same systems, in the languages they actually run on — Python, SQL and Terraform.
+          Pick a discipline and read the real thing — typed services, data pipelines, and AI agents,
+          wired up like the workflows I automate.
         </p>
         <CodeWindow />
       </section>
