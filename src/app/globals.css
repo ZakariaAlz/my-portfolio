@@ -45,6 +45,10 @@ body {
 a { color: inherit; text-decoration: none; }
 img { display: block; }
 ::selection { background: var(--mint); color: #FFFFFF; }
+/* keyboard focus — visible, on-brand ring (mouse clicks stay clean via :focus-visible) */
+:focus-visible { outline: 2.5px solid var(--mint); outline-offset: 3px; border-radius: 5px; }
+/* brighter ring on the dark sections/panels for contrast */
+.services :focus-visible, .contact :focus-visible, .arch-panel :focus-visible, .n8n :focus-visible { outline-color: #9AA0FF; }
 .disp { font-family: var(--font-disp); }
 .mono { font-family: var(--font-code); }
 
