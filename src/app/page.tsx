@@ -511,20 +511,28 @@ export default function Page() {
       {/* ── CONTACT ── */}
       <section className="pad contact" id="contact">
         <div className="card rv">
-          <div className="blobm" />
-          <div className="blobb" />
+          <span className="c-aurora" aria-hidden="true" />
+          <span className="c-grid" aria-hidden="true" />
           <div className="inner">
-            <div>
-              <div className="seclabel" style={{ color: "#9AA0FF" }}>Contact</div>
-              <div className="ctabig disp">Let&apos;s <span className="acc">build.</span></div>
+            <div className="c-left">
+              <span className="c-avail"><span className="led" />Available · {DATA.location}</span>
+              <h2 className="ctabig disp">Let&apos;s <span className="acc">build.</span></h2>
+              <p className="c-lead">
+                Open to select freelance data engineering &amp; AI automation work —
+                pipelines, warehouses, and the automation that runs on top.
+              </p>
             </div>
-            <div className="ctaside">
-              <p>Open to select freelance data engineering work. The fastest way to reach me:</p>
-              <a className="btn btn-mint magnetic" href={`mailto:${DATA.email}`}>Email me →</a>
-              <div className="row">
-                <a className="btn btn-line" href={DATA.socials.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
-                <a className="btn btn-line" href={DATA.socials.github}   target="_blank" rel="noopener noreferrer">GitHub</a>
+            <div className="c-actions">
+              <a className="c-mail magnetic" href={`mailto:${DATA.email}`}>
+                <span className="c-mail-ic">{ic("gmail", 22)}</span>
+                <span className="c-mail-t"><b>Email me</b><em>{DATA.email}</em></span>
+                <span className="c-arrow"><Arrow /></span>
+              </a>
+              <div className="c-socials">
+                <a className="c-soc" href={DATA.socials.linkedin} target="_blank" rel="noopener noreferrer">{ic("linkedin", 20)}<span>LinkedIn</span></a>
+                <a className="c-soc" href={DATA.socials.github} target="_blank" rel="noopener noreferrer">{ic("github", 20)}<span>GitHub</span></a>
               </div>
+              <span className="c-note">Typically replies within a day.</span>
             </div>
           </div>
         </div>
@@ -532,14 +540,21 @@ export default function Page() {
 
       {/* ── FOOTER ── */}
       <footer>
-        <div className="copy">
-          © 2026 — <strong>{DATA.fullName.toUpperCase()}</strong><br />
-          DATA ENGINEER &amp; AI SPECIALIST · {DATA.location.toUpperCase()}
+        <div className="foot-row">
+          <a className="foot-brand" href="#top"><span className="dot" />Zack</a>
+          <a className="foot-up" href="#top">Back to top <span aria-hidden="true">↑</span></a>
         </div>
-        <div className="soc">
-          <a href={DATA.socials.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">{ic("linkedin", 18)}</a>
-          <a href={DATA.socials.github}   target="_blank" rel="noopener noreferrer" aria-label="GitHub">{ic("github", 18)}</a>
-          <a href={`mailto:${DATA.email}`} aria-label="Email">{ic("gmail", 18)}</a>
+        <div className="foot-row foot-main">
+          <div className="copy">
+            © 2026 — <strong>{DATA.fullName}</strong><br />
+            Data Engineer &amp; AI Specialist · {DATA.location}
+          </div>
+          <a className="foot-mail" href={`mailto:${DATA.email}`}>{DATA.email}</a>
+          <div className="soc">
+            <a href={DATA.socials.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">{ic("linkedin", 18)}</a>
+            <a href={DATA.socials.github}   target="_blank" rel="noopener noreferrer" aria-label="GitHub">{ic("github", 18)}</a>
+            <a href={`mailto:${DATA.email}`} aria-label="Email">{ic("gmail", 18)}</a>
+          </div>
         </div>
       </footer>
     </>
