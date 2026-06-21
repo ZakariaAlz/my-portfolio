@@ -6,8 +6,9 @@ import LiquidHero from "@/components/LiquidHero";
 import ArchitectureFlow from "@/components/ArchitectureFlow";
 import CodeWindow from "@/components/CodeWindow";
 import HowIWork from "@/components/HowIWork";
-import CursorRibbon from "@/components/CursorRibbon";
 import Constellation from "@/components/Constellation";
+import Globe from "@/components/Globe";
+import ProjectShots from "@/components/ProjectShots";
 import { BRAND } from "@/lib/brand";
 
 declare global {
@@ -129,6 +130,29 @@ export default function Page() {
       });
     }
 
+    // (1b) card tilt + cursor spotlight — buttery 3D hover on chips & project cards.
+    // Sets --mx/--my (px within card) for the spotlight, and a perspective tilt
+    // toward the cursor. Resets on leave so the CSS reveal/hover takes back over.
+    if (!reduce) {
+      const tilt = (el: HTMLElement, maxDeg: number, lift: number) => {
+        const move = (e: MouseEvent) => {
+          const r = el.getBoundingClientRect();
+          const px = (e.clientX - r.left) / r.width;
+          const py = (e.clientY - r.top) / r.height;
+          el.style.setProperty("--mx", `${e.clientX - r.left}px`);
+          el.style.setProperty("--my", `${e.clientY - r.top}px`);
+          el.style.transform = `perspective(900px) rotateX(${(0.5 - py) * maxDeg}deg) rotateY(${(px - 0.5) * maxDeg}deg) translateY(${lift}px)`;
+        };
+        const leave = () => { el.style.transform = ""; };
+        el.addEventListener("mousemove", move);
+        el.addEventListener("mouseleave", leave);
+        cleanups.push(() => { el.removeEventListener("mousemove", move); el.removeEventListener("mouseleave", leave); });
+      };
+      document.querySelectorAll<HTMLElement>(".chip").forEach((el) => tilt(el, 8, -6));
+      document.querySelectorAll<HTMLElement>(".proj:not(.coming)").forEach((el) => tilt(el, 4.5, -6));
+      document.querySelectorAll<HTMLElement>(".srv").forEach((el) => tilt(el, 4, -5));
+    }
+
     // (2) count-up stats — tween 0→target once the strip scrolls into view
     const band = document.querySelector(".statband");
     if (band) {
@@ -196,9 +220,7 @@ export default function Page() {
 
   return (
     <>
-      <div className="mesh" />
       <div className="grain" />
-      <CursorRibbon />
 
       {/* ── NAV ── */}
       <nav className="nav" ref={navRef}>
@@ -225,9 +247,7 @@ export default function Page() {
             <div className="badge e" style={{ animationDelay: ".15s" }}><span className="led" />System Core · Data &amp; AI</div>
             <h1 className="disp e" style={{ animationDelay: ".28s" }}>
               Data &amp; Software<br />
-              <span className="accent doodle-underline">Engineer
-                <svg viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M5 15 C 55 5, 120 21, 185 12 S 270 7, 295 15" /></svg>
-              </span>
+              <span className="accent">Engineer</span>
               <span className="l3"><span className="amp">&amp;</span> AI Automation</span>
             </h1>
             <p className="sub e" style={{ animationDelay: ".46s" }}>
@@ -323,10 +343,32 @@ export default function Page() {
       </section>
 
       {/* ── ABOUT ── */}
-      <section className="pad" id="about">
-        <div className="seclabel rv">About</div>
-        <h2 className="bighead disp rv">I make data <span className="accent">behave.</span></h2>
-        <p className="abody rv" style={{ maxWidth: "58ch" }}>{DATA.about.body}</p>
+      <section className="pad about-sec" id="about">
+        <div className="about-grid">
+          <div className="about-lead">
+            <div className="seclabel rv">About</div>
+            <h2 className="bighead disp about-head rv" aria-label="I make data behave.">
+              <span className="ln"><span>I make data</span></span>
+              <span className="ln"><span>behave<span className="accent">.</span></span></span>
+            </h2>
+            <p className="abody rv">{DATA.about.body}</p>
+          </div>
+          <ul className="principles rv" aria-label="How I work">
+            <span className="prail" aria-hidden="true" />
+            <li className="pr rv">
+              <span className="pnode" aria-hidden="true" />
+              <div><b>Pipelines that don&apos;t break</b><em>Resilient batch &amp; streaming ingestion, watched and alerted.</em></div>
+            </li>
+            <li className="pr rv">
+              <span className="pnode" aria-hidden="true" />
+              <div><b>Models you can trust</b><em>Tested, layered warehouses with lineage you can audit.</em></div>
+            </li>
+            <li className="pr rv">
+              <span className="pnode" aria-hidden="true" />
+              <div><b>Docs future-you will thank you for</b><em>Context that outlives me — so the system keeps running.</em></div>
+            </li>
+          </ul>
+        </div>
       </section>
 
       {/* ── HOW I WORK (pinned scroll story) ── */}
@@ -385,11 +427,9 @@ export default function Page() {
             <span className="coords"><span className="pin" />Freelancer · Algiers, Algeria</span>
           </div>
           <div className="globe-stage">
-            <div className="locpin" aria-hidden="true">
-              <span className="ring" /><span className="ring d2" /><span className="ring d3" />
-              <span className="core" />
-              <span className="loclabel">Algiers</span>
-            </div>
+            <span className="globe-glow" aria-hidden="true" />
+            <Globe />
+            <span className="globe-tag"><span className="pin" />Algiers</span>
           </div>
         </div>
       </section>
@@ -410,7 +450,8 @@ export default function Page() {
         <div className="seclabel rv">Under the hood</div>
         <h2 className="sectitle disp rv">Code when it <span className="accent">counts.</span></h2>
         <p className="lead rv">
-          The same systems, in the languages they actually run on — Python, SQL and Terraform.
+          Pick a discipline and read the real thing — typed services, data pipelines, and AI agents,
+          wired up like the workflows I automate.
         </p>
         <CodeWindow />
       </section>
@@ -448,13 +489,7 @@ export default function Page() {
               <a key={p.name} className={`proj ${cls} rv`} href={p.repo} target="_blank" rel="noopener noreferrer">
                 <div className="shot">
                   <span className="kind">{p.kind}</span>
-                  <div className="ph">
-                    {(p.stackIcons as readonly string[]).map((k) => (
-                      <span key={k} className="logo" style={{ width: "clamp(34px,4vw,52px)", height: "clamp(34px,4vw,52px)" }}>
-                        {ic(k, 48)}
-                      </span>
-                    ))}
-                  </div>
+                  <ProjectShots shots={p.shots} alt={`${p.name} — screenshot`} />
                 </div>
                 <div className="meta">
                   <div className="tag">{p.tag}</div>

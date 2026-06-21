@@ -71,9 +71,9 @@ export default function Globe() {
     const camera = new THREE.PerspectiveCamera(42, W / H, 0.1, 100);
     camera.position.set(0, 0, 3.5);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    renderer.setClearColor(0xffffff, 1);
+    renderer.setClearColor(0xffffff, 0); // transparent → CSS glow halo shows behind
     renderer.setSize(W, H);
     mount.appendChild(renderer.domElement);
 
@@ -91,7 +91,7 @@ export default function Globe() {
     const uniforms = {
       uTime: { value: 0 }, uSize: { value: 13 }, uPixel: { value: renderer.getPixelRatio() },
       uMouse: { value: new THREE.Vector3(0, 0, 1) }, uMouseStr: { value: 0 },
-      uColA: { value: new THREE.Color(0x0a9d68) }, uColB: { value: new THREE.Color(0x06b277) },
+      uColA: { value: new THREE.Color(0x4148c2) }, uColB: { value: new THREE.Color(0x8d92e8) },
     };
     const ptMat = new THREE.ShaderMaterial({
       uniforms, vertexShader: VERT, fragmentShader: FRAG,
@@ -155,14 +155,14 @@ export default function Globe() {
 
     // Algiers marker (glows under bloom)
     const aPos = ll(ALGIERS.lat, ALGIERS.lng, R * 1.02);
-    const mk = new THREE.Mesh(new THREE.SphereGeometry(0.022, 16, 16), new THREE.MeshBasicMaterial({ color: 0x00a86b }));
+    const mk = new THREE.Mesh(new THREE.SphereGeometry(0.022, 16, 16), new THREE.MeshBasicMaterial({ color: 0x5c63e6 }));
     mk.position.copy(aPos); globe.add(mk);
 
     // data packets streaming into Algiers
     type Arc = { c: THREE.QuadraticBezierCurve3; head: THREE.Mesh; t: number; s: number };
     const arcs: Arc[] = [];
     const headGeo = new THREE.SphereGeometry(0.014, 8, 8);
-    const tubeMatShared = new THREE.MeshBasicMaterial({ color: 0x00a86b, transparent: true, opacity: 0.26 });
+    const tubeMatShared = new THREE.MeshBasicMaterial({ color: 0x5c63e6, transparent: true, opacity: 0.26 });
     trash.push(headGeo, tubeMatShared);
     CITIES.forEach(([lat, lng], i) => {
       const from = ll(lat, lng, R * 1.005);
@@ -171,7 +171,7 @@ export default function Globe() {
       const tg = new THREE.TubeGeometry(c, 50, 0.0022, 6, false);
       globe.add(new THREE.Mesh(tg, tubeMatShared));
       trash.push(tg);
-      const head = new THREE.Mesh(headGeo, new THREE.MeshBasicMaterial({ color: 0x00c281 }));
+      const head = new THREE.Mesh(headGeo, new THREE.MeshBasicMaterial({ color: 0x9aa0ff }));
       globe.add(head);
       trash.push(head.material as THREE.Material);
       arcs.push({ c, head, t: i / CITIES.length, s: 0.0035 + Math.random() * 0.004 });

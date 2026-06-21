@@ -162,7 +162,8 @@ export default function LiquidHero() {
     window.addEventListener("touchmove", onTouch, { passive: true });
     window.addEventListener("scroll", onScroll, { passive: true });
 
-    let raf = 0, vis = true, start = performance.now();
+    let raf = 0, vis = true;
+    const start = performance.now();
     const io = new IntersectionObserver((es) => {
       vis = es[0].isIntersecting;
       if (vis && !raf && !reduce) raf = requestAnimationFrame(frame);
