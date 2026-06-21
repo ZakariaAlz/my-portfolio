@@ -200,6 +200,36 @@ export default function Page() {
     return () => cleanups.forEach((c) => c());
   }, []);
 
+  // ── Journey "career pipeline": scroll-scrub the line fill + light coins in sequence ──
+  useEffect(() => {
+    const tl = document.querySelector<HTMLElement>(".htimeline");
+    if (!tl) return;
+    const coins = Array.from(tl.querySelectorAll<HTMLElement>(".hstop"));
+    const n = coins.length || 1;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+      tl.style.setProperty("--jprog", "1");
+      coins.forEach((c) => c.classList.add("lit"));
+      return;
+    }
+    let raf = 0;
+    const compute = () => {
+      raf = 0;
+      const r = tl.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const start = vh * 0.82, end = vh * 0.34; // fills as the section rises through the viewport
+      const p = Math.min(1, Math.max(0, (start - r.top) / (start - end)));
+      tl.style.setProperty("--jprog", p.toFixed(3));
+      tl.style.setProperty("--jvis", p > 0.012 && p < 0.985 ? "1" : "0");
+      const lit = Math.round(p * n);
+      coins.forEach((c, i) => c.classList.toggle("lit", i < lit));
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(compute); };
+    compute();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => { cancelAnimationFrame(raf); window.removeEventListener("scroll", onScroll); window.removeEventListener("resize", onScroll); };
+  }, []);
+
   const ic = (k: string, size = 26) => <Ic k={k} size={size} icons={icons} />;
 
   // Make-style isometric scenario board: 3 app bubbles + curved connectors + flowing orbs
@@ -407,6 +437,7 @@ export default function Page() {
               ))}
             </div>
             <div className="hline" aria-hidden="true">
+              <span className="hfill" />
               <span className="comet" />
               <span className="terminus" />
             </div>
