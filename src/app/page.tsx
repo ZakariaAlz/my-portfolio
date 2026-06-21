@@ -540,14 +540,21 @@ export default function Page() {
 
       {/* ── FOOTER ── */}
       <footer>
-        <div className="copy">
-          © 2026 — <strong>{DATA.fullName.toUpperCase()}</strong><br />
-          DATA ENGINEER &amp; AI SPECIALIST · {DATA.location.toUpperCase()}
+        <div className="foot-row">
+          <a className="foot-brand" href="#top"><span className="dot" />Zack</a>
+          <a className="foot-up" href="#top">Back to top <span aria-hidden="true">↑</span></a>
         </div>
-        <div className="soc">
-          <a href={DATA.socials.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">{ic("linkedin", 18)}</a>
-          <a href={DATA.socials.github}   target="_blank" rel="noopener noreferrer" aria-label="GitHub">{ic("github", 18)}</a>
-          <a href={`mailto:${DATA.email}`} aria-label="Email">{ic("gmail", 18)}</a>
+        <div className="foot-row foot-main">
+          <div className="copy">
+            © 2026 — <strong>{DATA.fullName}</strong><br />
+            Data Engineer &amp; AI Specialist · {DATA.location}
+          </div>
+          <a className="foot-mail" href={`mailto:${DATA.email}`}>{DATA.email}</a>
+          <div className="soc">
+            <a href={DATA.socials.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">{ic("linkedin", 18)}</a>
+            <a href={DATA.socials.github}   target="_blank" rel="noopener noreferrer" aria-label="GitHub">{ic("github", 18)}</a>
+            <a href={`mailto:${DATA.email}`} aria-label="Email">{ic("gmail", 18)}</a>
+          </div>
         </div>
       </footer>
     </>

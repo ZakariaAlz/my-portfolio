@@ -107,7 +107,7 @@ img { display: block; }
 .hero-veil {
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background:
-    linear-gradient(100deg, rgba(255,255,255,.92) 0%, rgba(255,255,255,.62) 30%, rgba(255,255,255,.14) 56%, rgba(255,255,255,0) 74%),
+    linear-gradient(100deg, rgba(255,255,255,.97) 0%, rgba(255,255,255,.82) 26%, rgba(255,255,255,.34) 50%, rgba(255,255,255,0) 72%),
     linear-gradient(0deg, rgba(255,255,255,.6) 0%, rgba(255,255,255,0) 22%);
 }
 .hero .wrap {
@@ -795,9 +795,18 @@ img { display: block; }
 @media (prefers-reduced-motion: reduce) { .c-aurora, .c-avail .led { animation: none; } }
 
 /* ── FOOTER ───────────────────────────────────────────────── */
-footer { background: var(--canvas); padding: 48px clamp(24px,7vw,110px); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; border-top: 1px solid var(--line); }
+footer { background: var(--canvas); padding: 40px clamp(24px,7vw,110px) 48px; border-top: 1px solid var(--line); }
+.foot-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+.foot-main { margin-top: 26px; padding-top: 26px; border-top: 1px solid var(--line); align-items: flex-end; }
+.foot-brand { display: inline-flex; align-items: center; gap: 9px; font-family: var(--font-disp); font-weight: 800; font-size: 19px; letter-spacing: -.03em; color: var(--ink); }
+.foot-brand .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 0 4px rgba(92,99,230,.18); }
+.foot-up { font-family: var(--font-code); font-size: 12.5px; letter-spacing: .04em; color: var(--mute); transition: color .25s; }
+.foot-up:hover { color: var(--mint-d); }
 footer .copy { font-family: var(--font-code); color: var(--mute); font-size: 13px; line-height: 1.7; }
 footer .copy strong { color: var(--ink); }
+.foot-mail { font-family: var(--font-code); font-size: 13px; color: var(--ink-soft); border-bottom: 1px solid var(--line); padding-bottom: 2px; transition: color .25s, border-color .25s; }
+.foot-mail:hover { color: var(--mint-d); border-color: var(--mint); }
+@media (max-width: 640px) { .foot-mail { display: none; } }
 .soc { display: flex; gap: 12px; }
 .soc a { width: 44px; height: 44px; border-radius: 13px; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; color: var(--ink); background: var(--surface); transition: .3s; }
 .soc a:hover { background: var(--ink); color: #fff; border-color: var(--ink); transform: translateY(-3px); }
