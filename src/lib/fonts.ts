@@ -1,4 +1,4 @@
-import { Bricolage_Grotesque, Hanken_Grotesk, JetBrains_Mono, Caveat } from "next/font/google";
+import { Schibsted_Grotesk, Geist, JetBrains_Mono, Caveat } from "next/font/google";
 
 export const caveat = Caveat({
   subsets: ["latin"],
@@ -7,14 +7,14 @@ export const caveat = Caveat({
   display: "swap",
 });
 
-export const bricolage = Bricolage_Grotesque({
+export const schibsted = Schibsted_Grotesk({
   subsets: ["latin"],
   variable: "--font-display",
-  weight: ["500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700", "800"],
   display: "swap",
 });
 
-export const hanken = Hanken_Grotesk({
+export const geist = Geist({
   subsets: ["latin"],
   variable: "--font-body",
   weight: ["400", "500", "600", "700"],

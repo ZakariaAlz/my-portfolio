@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { bricolage, hanken, jetbrains, caveat } from "@/lib/fonts";
+import { schibsted, geist, jetbrains, caveat } from "@/lib/fonts";
 import "./globals.css";
 
 const SITE = "https://zakaria-alizouaoui.com";
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${bricolage.variable} ${hanken.variable} ${jetbrains.variable} ${caveat.variable}`}>
+    <html lang="en" className={`${schibsted.variable} ${geist.variable} ${jetbrains.variable} ${caveat.variable}`}>
       <body>
         {children}
         <Script src="/icons.js" strategy="afterInteractive" />
