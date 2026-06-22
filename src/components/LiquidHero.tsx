@@ -53,22 +53,22 @@ void main(){
                 fbm(p*1.6 + 1.8*q + vec2(8.3,2.8) - 0.4*t));
   float f = fbm(p*1.6 + 2.4*r + ripple*1.6);
 
-  // iridescent thin-film hue (INDIGO family — indigo · periwinkle · violet)
+  // iridescent thin-film hue (COBALT family — cobalt · sky · azure)
   float hue = f*0.55 + length(r)*0.35 + ripple*0.6 + t*0.25 + 0.5;
   vec3 col = pal(hue,
-    vec3(0.64,0.64,0.74),
-    vec3(0.30,0.30,0.40),
-    vec3(0.90,0.90,1.00),
-    vec3(0.30,0.22,0.50));
+    vec3(0.62,0.66,0.78),
+    vec3(0.20,0.30,0.50),
+    vec3(0.90,0.93,1.00),
+    vec3(0.13,0.27,0.62));
 
-  // pull toward brand indigo / periwinkle
-  col = mix(col, vec3(0.36,0.39,0.90), 0.16*smoothstep(0.40,0.92,f));          // indigo
-  col = mix(col, vec3(0.55,0.57,0.95), 0.11*smoothstep(0.40,0.92,length(q)));  // periwinkle
-  col = mix(col, vec3(0.42,0.30,0.85), 0.09*smoothstep(0.45,0.95,length(r)));  // violet
-  col = mix(col, vec3(0.72,0.74,1.00), 0.06*smoothstep(0.58,0.98,f));          // light periwinkle sheen
+  // pull toward brand Cobalt / sky-blue
+  col = mix(col, vec3(0.15,0.40,0.92), 0.16*smoothstep(0.40,0.92,f));          // cobalt
+  col = mix(col, vec3(0.42,0.63,1.00), 0.11*smoothstep(0.40,0.92,length(q)));  // sky
+  col = mix(col, vec3(0.16,0.39,0.92), 0.09*smoothstep(0.45,0.95,length(r)));  // cobalt deep
+  col = mix(col, vec3(0.66,0.78,1.00), 0.06*smoothstep(0.58,0.98,f));          // light azure sheen
 
-  // blend over the indigo-tinted canvas so it stays light
-  vec3 base = vec3(0.949,0.953,0.984);
+  // blend over the near-white canvas so it stays light
+  vec3 base = vec3(0.98,0.99,1.00);
   float mixAmt = clamp(0.48 + 0.32*f + ripple*0.38, 0.0, 0.88);
   col = mix(base, col, mixAmt);
 

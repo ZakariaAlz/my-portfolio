@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
    so it feels "touchable". DPR-aware, pauses offscreen, respects reduced-motion. */
 
 export default function Constellation({
-  color = "92,99,230",
+  color = "37,99,235",
   density = 9000,
   linkDist = 132,
 }: { color?: string; density?: number; linkDist?: number }) {
