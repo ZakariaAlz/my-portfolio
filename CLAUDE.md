@@ -28,21 +28,22 @@ Career arc (drives the timeline): **Software → Data → AI/Automation**. 4 int
 - Repo: `/home/zakaria/Documents/DE Projects/my-portfolio/`. Dev: `bun run dev` → **http://localhost:3001** (port 3000 taken).
 - Reference/design project (NOT the live app): `/home/zakaria/Documents/DE Projects/zack-portfolio/` — holds `assets/` (see below).
 
-## Palette — INDIGO (LOCKED)
-Switched from green→indigo on 2026-06-19 (user chose Indigo over navy/sand/gold in a side-by-side Claude artifact). **Do NOT reintroduce green/mint.** Token NAMES are legacy (`--mint` etc.) but hold indigo values. In `src/app/globals.css :root`:
-- `--canvas:#F2F3FB` · `--canvas-2:#E9EBF8` · `--surface:#FFFFFF`
-- `--ink:#0E0F1C` · `--ink-soft:#3A3D5C` · `--mute:#595C7A` · `--line:rgba(14,15,28,.12)`
-- `--mint:#5C63E6` (PRIMARY accent) · `--mint-d:#4148C2` (accent text on light) · `--blue:#8D92E8` (periwinkle 2nd) · `--blue-d:#6065D8`
-- `--dark:#101230` (dark/anchor sections) · accent-on-dark bright = `#9AA0FF`
-- Kept intentionally as-is: macOS code-window **syntax colors** (GitHub-dark) and **tech-icon brand colors** (`src/lib/brand.ts`).
-- Re-theming was done via `sed` on hardcoded hex/rgba + the `:root` block; if changing palette again, repeat that approach.
+## Palette — COBALT (Blue · Black · White — LOCKED 2026-06-22)
+Phase 0 of the Lusion-grade redesign re-skinned indigo→**Cobalt `#2563EB`** on a light Apple/Stripe/Kantar canvas with true-black "theater" sections. **Cobalt is the only accent — black, white, grey, Cobalt, nothing else. Do NOT reintroduce green/mint/violet/indigo.** Token NAMES stay legacy (`--mint`/`--blue` etc., ~80 refs) but now hold Cobalt values. In `src/app/globals.css :root`:
+- `--canvas:#FFFFFF` · `--canvas-2:#F6F8FB` (grey band) · `--surface:#FFFFFF`
+- `--ink:#08090C` (near-black) · `--ink-soft:#3F4651` · `--mute:#6B7280` · `--line:rgba(8,9,12,.10)`
+- `--mint:#2563EB` (PRIMARY accent) · `--mint-d:#1D4ED8` (hover / accent text on light) · `--blue:#6AA0FF` (sky/glow 2nd) · `--blue-d:#2563EB` · `--blue-tint:#EAF1FE` (chips/soft fills)
+- `--dark:#08090C` (theater sections) · `--dark-2:#0E0F12` · accent-on-dark bright = `#6AA0FF`
+- Kept intentionally off-palette: macOS code-window **syntax colors** (GitHub-dark, `CodeWindow.tsx`) and **tech-icon brand colors** (`src/lib/brand.ts`).
+- `LiquidHero.tsx` shader palette shares one cosine frequency across channels, biased blue-dominant, so the iridescence stays deep-cobalt↔periwinkle and never rotates into green.
+- Re-theming was done via `sed` on hardcoded hex/rgba + the `:root` block; if changing palette again, repeat that approach. **Redesign source of truth:** `docs/superpowers/specs/2026-06-22-lusion-grade-redesign-design.md` (Phase 0 = art direction; Phases 1–4 scoped there).
 
 ## Fonts (`src/lib/fonts.ts`, next/font)
-**Bricolage Grotesque** (`--font-disp`, display) · **Hanken Grotesk** (`--font-text`, body) · **JetBrains Mono** (`--font-code`, labels) · **Caveat** (`--font-hand`, handwritten years in timeline). Applied via classNames on `<html>` in `layout.tsx`.
+**Schibsted Grotesk** (`--font-disp`, display — 700/800, negative tracking) · **Geist** (`--font-text`, body) · **JetBrains Mono** (`--font-code`, labels/eyebrows in Cobalt) · **Caveat** (`--font-hand`, handwritten years in timeline). Applied via classNames on `<html>` in `layout.tsx`. (Bricolage Grotesque + Hanken Grotesk retired in Phase 0.)
 
 ## Site structure (single page, `src/app/page.tsx` = one "use client" component)
 Order: **Nav → Hero → Marquee → Stats strip → Stack → About → How I work (`#process`) → Journey → #based(location) → Architecture → Code → Services → Projects → Contact → Footer**.
-Global: Lenis smooth-scroll + `IntersectionObserver` `.rv` reveals (set up first/independently so content never stays hidden; 2.5s failsafe) · **`CursorRibbon.tsx`** global glowing spring-chain ribbon trailing the pointer (fine-pointer + non-reduced-motion only, fades when idle, `z-index:45`) · a **3rd `useEffect` in `page.tsx`** wires **magnetic buttons + count-up stats + scroll-spy nav**.
+Global: Lenis smooth-scroll + `IntersectionObserver` `.rv` reveals (set up first/independently so content never stays hidden; 2.5s failsafe) · a **3rd `useEffect` in `page.tsx`** wires **magnetic buttons + count-up stats + scroll-spy nav**. (The `CursorRibbon.tsx` ribbon was removed earlier on this redesign branch — do not reintroduce it without asking.)
 
 ### Components & current animations
 - `LiquidHero.tsx` — full-screen **WebGL iridescent fluid** (indigo/periwinkle/violet shader), reacts to cursor + scroll. Hero bg.
@@ -72,7 +73,7 @@ Published Claude artifacts (redeploy same path to update):
 - **Tier 1 (quick wins): ✅ DONE 2026-06-20** — magnetic CTAs (nav/hero/contact, JS pointer-follow + spring-back) · count-up stats strip after marquee (16M+ records · 8 dashboards · 12+ tech · 4 internships; IO-triggered rAF cubic-ease) · scroll-spy active nav (IO, −45%/−50% center band) · hand-drawn doodle underline under hero "Engineer" (stroke-dashoffset draw-on). All in `page.tsx` (3rd `useEffect`) + `globals.css` (`.magnetic`/`.statband`/`.nav-links a.active`/`.doodle-underline`); build green, served CSS verified.
 - **Tier 2 (showpieces): ✅ DONE 2026-06-20 (except parallax)** — ✅ **live-typing code window** (`CodeWindow.tsx`: types the active file char-by-char on scroll-in, re-types on tab switch; periwinkle `#9AA0FF` caret, solid while typing, blinks when done) · ✅ Typeform-style **pinned "How I work"** section (`HowIWork.tsx`, `id="process"`, placed after About; uses CSS `position:sticky` + scroll-progress→active step + a self-filling pipeline rail — NOT GSAP pin, more robust in React; static stacked fallback for mobile/reduced-motion) · ⏳ layered parallax screen-stack (BLOCKED — needs real project screenshots from user).
 - **Tier 3:** Stack tile shimmer · data-gathering particle burst · FAQ accordion / rate slider · Yalantis story-loop.
-- **LUSION (clip21/22, the "expensive" benchmark):** real-time WebGL 3D object cluster + **interactive cursor ribbon/spline trail** (signature) + reel-style video project tiles + tasteful bloom/grain. Full Lusion = specialist GPGPU (months); capture the FLAVOR: an **interactive mouse-following ribbon** (canvas/shader) is the highest-ROI Lusion touch — ✅ **DONE 2026-06-20** (`CursorRibbon.tsx`: global fixed canvas, spring-chain of 26 nodes each easing toward the previous, indigo→periwinkle tapered glowing stroke, visibility scales with pointer speed so it fades when idle; fine-pointer + non-reduced-motion only; `z-index:45`, under the nav; mounted in `page.tsx` after `.grain`). Everything is built ORIGINAL (techniques only, never their assets/copy).
+- **LUSION (clip21/22, the "expensive" benchmark):** real-time WebGL 3D object cluster + **interactive cursor ribbon/spline trail** (signature) + reel-style video project tiles + tasteful bloom/grain. Full Lusion = specialist GPGPU (months); capture the FLAVOR with a handful of techniques executed flawlessly. (A `CursorRibbon.tsx` mouse-following ribbon was built 2026-06-20 but **removed** on the redesign branch — the Lusion-grade signature 3D/cursor interaction is now scoped for Phase 2 of the redesign spec.) Everything is built ORIGINAL (techniques only, never their assets/copy).
 
 ## Gotchas
 - **Dev server serves STALE CSS** sometimes (HMR wedges) → `kill` the my-portfolio `next dev`, `rm -rf .next`, restart, hard-refresh. Verify served CSS by curling the `/_next/static/chunks/*.css`.
@@ -105,4 +106,4 @@ Tier 1 ✅ + Tier 2 ✅ (live-typing code · pinned "How I work" · Lusion curso
 - **Optional Lusion extras / watch-outs:** tasteful bloom+grain pass; the cursor ribbon currently overlays the hero's WebGL fluid — if it reads as "too much," fade it while `scrollY < heroHeight`. Consider whether the pinned "How I work" (440vh) scroll length feels right.
 **Dependencies: nothing to install** — `gsap`(+ScrollTrigger+SplitText), `@studio-freight/lenis`, `three`, `framer-motion`, `@gsap/react`, R3F/drei/postprocessing all present. `bun add` only if a new one is ever needed.
 
-*Last updated: 2026-06-20 — Tier-1 + Tier-2 animations shipped (magnetic · count-up · scroll-spy · doodle · live-typing code · pinned "How I work" · cursor ribbon); Indigo locked; full 22-recording audit done. Plus: About section rebuilt into a composed reveal (masked heading + node rail) & global blur-in fade; staff-quality README; commit/verify discipline + GitHub Actions CI + Vercel prod deploy added.*
+*Last updated: 2026-06-22 — **Phase 0 of the Lusion-grade redesign**: re-skinned Indigo→**Cobalt `#2563EB`** (Blue/Black/White) and swapped type to **Schibsted Grotesk + Geist** (+ JetBrains Mono + Caveat). No structural changes; build + lint green, full render audit verified Cobalt end-to-end, no green/violet. Spec: `docs/superpowers/specs/2026-06-22-lusion-grade-redesign-design.md`; Phase 0 plan: `docs/superpowers/plans/2026-06-22-phase0-art-direction.md`. Earlier (2026-06-20): Tier-1 + Tier-2 animations (magnetic · count-up · scroll-spy · doodle · live-typing code · pinned "How I work"); CI + deploy.*
