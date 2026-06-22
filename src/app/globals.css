@@ -1,29 +1,32 @@
 @import "tailwindcss";
 
-/* ── Design tokens (Indigo) ───────────────────────────────── */
+/* ── Design tokens (Blue · Black · White — Cobalt #2563EB) ──── */
 :root {
   --canvas:   #FFFFFF;
-  --canvas-2: #F6F8FD;
+  --canvas-2: #F6F8FB;
   --surface:  #FFFFFF;
-  --ink:      #0E0F1C;
-  --ink-soft: #3A3D5C;
-  --mute:     #595C7A;
-  --line:     rgba(14,15,28,.12);
+  --ink:      #08090C;
+  --ink-soft: #3F4651;
+  --mute:     #6B7280;
+  --line:     rgba(8,9,12,.10);
 
-  --mint:   #5C63E6;
-  --mint-d: #4148C2;
-  --blue:   #8D92E8;
-  --blue-d: #6065D8;
+  /* legacy names, Cobalt values: --mint = primary accent, --blue = secondary/glow */
+  --mint:   #2563EB;
+  --mint-d: #1D4ED8;
+  --blue:   #6AA0FF;
+  --blue-d: #2563EB;
+  --blue-tint: #EAF1FE;
 
   --glass-fill:   rgba(255,255,255,.55);
   --glass-border: rgba(255,255,255,.7);
-  --glow-a: rgba(92,99,230,.5);
-  --glow-b: rgba(141,146,232,.45);
+  --glow-a: rgba(37,99,235,.5);
+  --glow-b: rgba(106,160,255,.45);
 
   --shadow-sm: 0 1px 2px rgba(9,13,22,.04), 0 8px 24px -16px rgba(9,13,22,.18);
   --shadow-lg: 0 30px 70px -36px rgba(9,13,22,.4);
 
-  --dark: #101230;
+  --dark:   #08090C;
+  --dark-2: #0E0F12;
 
   --font-disp: var(--font-display), "Schibsted Grotesk", system-ui, sans-serif;
   --font-text: var(--font-body), "Geist", system-ui, sans-serif;
