@@ -53,13 +53,15 @@ void main(){
                 fbm(p*1.6 + 1.8*q + vec2(8.3,2.8) - 0.4*t));
   float f = fbm(p*1.6 + 2.4*r + ripple*1.6);
 
-  // iridescent thin-film hue (COBALT family — cobalt · sky · azure)
+  // iridescent thin-film hue (COBALT family — deep cobalt ↔ periwinkle, never green)
+  // all channels share frequency c=1 so they oscillate in brightness around a
+  // blue-dominant bias (B always >= G) — keeps the sweep inside the blue wedge.
   float hue = f*0.55 + length(r)*0.35 + ripple*0.6 + t*0.25 + 0.5;
   vec3 col = pal(hue,
-    vec3(0.62,0.66,0.78),
-    vec3(0.20,0.30,0.50),
-    vec3(0.90,0.93,1.00),
-    vec3(0.13,0.27,0.62));
+    vec3(0.42,0.55,0.80),
+    vec3(0.30,0.22,0.16),
+    vec3(1.00,1.00,1.00),
+    vec3(0.00,0.05,0.10));
 
   // pull toward brand Cobalt / sky-blue
   col = mix(col, vec3(0.15,0.40,0.92), 0.16*smoothstep(0.40,0.92,f));          // cobalt
