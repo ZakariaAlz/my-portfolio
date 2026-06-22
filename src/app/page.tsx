@@ -489,7 +489,7 @@ export default function Page() {
 
       {/* ── SERVICES ── */}
       <section className="pad services" id="services">
-        <Constellation color="92,99,230" density={9000} linkDist={132} />
+        <Constellation color="37,99,235" density={9000} linkDist={132} />
         <div className="seclabel rv">What I offer</div>
         <h2 className="sectitle disp rv">Hire me for the hard, dependable parts.</h2>
         <p className="lead rv">
