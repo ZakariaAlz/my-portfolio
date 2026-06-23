@@ -117,7 +117,7 @@ export default function ArchitectureFlow({ icons }: { icons: Record<string, stri
           const pt = cubic(a, c1, c2, b, (s / SEG) * ep);
           if (s === 0) ctx.moveTo(pt.x, pt.y); else ctx.lineTo(pt.x, pt.y);
         }
-        ctx.strokeStyle = "rgba(92,99,230,0.28)";
+        ctx.strokeStyle = "rgba(37,99,235,0.28)";
         ctx.lineWidth = 1.6;
         ctx.stroke();
 
@@ -127,10 +127,10 @@ export default function ArchitectureFlow({ icons }: { icons: Record<string, stri
           if (pl && pl.t >= 0 && pl.t <= 1) {
             const pt = cubic(a, c1, c2, b, pl.t);
             const g = ctx.createRadialGradient(pt.x, pt.y, 0, pt.x, pt.y, 9);
-            g.addColorStop(0, "rgba(92,99,230,0.95)");
-            g.addColorStop(1, "rgba(92,99,230,0)");
+            g.addColorStop(0, "rgba(37,99,235,0.95)");
+            g.addColorStop(1, "rgba(37,99,235,0)");
             ctx.beginPath(); ctx.arc(pt.x, pt.y, 9, 0, 6.2832); ctx.fillStyle = g; ctx.fill();
-            ctx.beginPath(); ctx.arc(pt.x, pt.y, 2.4, 0, 6.2832); ctx.fillStyle = "rgba(210,213,255,0.95)"; ctx.fill();
+            ctx.beginPath(); ctx.arc(pt.x, pt.y, 2.4, 0, 6.2832); ctx.fillStyle = "rgba(180,205,255,0.95)"; ctx.fill();
           }
           if (pl) { pl.t += pl.speed; if (pl.t > 1.15) pl.t = -0.05; }
         }

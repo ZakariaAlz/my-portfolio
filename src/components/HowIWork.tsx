@@ -15,13 +15,13 @@ type Step = {
 };
 
 const STEPS: Step[] = [
-  { k: "discover", n: "01", title: "Discover", tag: "map",   icon: "discover", cx: 13, cy: 58.8, acc: "#6A6FF0", accD: "#5057D8",
+  { k: "discover", n: "01", title: "Discover", tag: "map",   icon: "discover", cx: 13, cy: 58.8, acc: "#5B8DEF", accD: "#1D4ED8",
     body: "I map the sources, the stakeholders, and the exact decision the data has to serve — before a line of pipeline code." },
-  { k: "design",   n: "02", title: "Design",   tag: "model", icon: "design",   cx: 38, cy: 32.4, acc: "#7B73F2", accD: "#5C63E6",
+  { k: "design",   n: "02", title: "Design",   tag: "model", icon: "design",   cx: 38, cy: 32.4, acc: "#6AA0FF", accD: "#2563EB",
     body: "I model the schemas and data contracts first, so the warehouse stays trustworthy as it grows." },
-  { k: "build",    n: "03", title: "Build",    tag: "ship",  icon: "build",    cx: 64, cy: 61.8, acc: "#5C63E6", accD: "#4148C2",
+  { k: "build",    n: "03", title: "Build",    tag: "ship",  icon: "build",    cx: 64, cy: 61.8, acc: "#2563EB", accD: "#1D4ED8",
     body: "I ship the pipeline — ingest, transform, test, deploy — versioned, containerized, and observable by default." },
-  { k: "activate", n: "04", title: "Activate", tag: "serve", icon: "activate", cx: 88, cy: 32.4, acc: "#8D92E8", accD: "#6065D8",
+  { k: "activate", n: "04", title: "Activate", tag: "serve", icon: "activate", cx: 88, cy: 32.4, acc: "#6AA0FF", accD: "#2563EB",
     body: "I layer dashboards, alerts, and AI on top — the part that turns clean data into decisions that compound." },
 ];
 
@@ -100,8 +100,8 @@ export default function HowIWork() {
           <svg className="flow-wires" viewBox="0 0 1000 340" preserveAspectRatio="xMidYMid meet">
             <defs>
               <linearGradient id="hwWire" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0" stopColor="#5C63E6" />
-                <stop offset="1" stopColor="#8D92E8" />
+                <stop offset="0" stopColor="#2563EB" />
+                <stop offset="1" stopColor="#6AA0FF" />
               </linearGradient>
             </defs>
             {LINKS.map((d, i) => (
